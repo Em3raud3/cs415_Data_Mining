@@ -3,15 +3,32 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-<<<<<<< HEAD
-df = pd.DataFrame({"C1": [14.23, 13.20, 13.16, 14.37, 13.24],
-                   "C2": [1.71, 1.78, 2.36, 1.95, 2.59],
-                   "C3": [2.43, 2.14, 2.67, 2.50, 2.87],
-                   "C4": [15.6, 11.2, 18.6, 16.8, 21.0],
-                   "C5": [127, 100, 101, 113, 118]})
+def main():
+    
+    # * Input the values for the dataframe
+    df = pd.DataFrame({"A": [1,2,4,2,5,3,5,1,6,2],
+                    "B": [100, 300, 200, 600, 100, 200, 300, 100, 400, 200],
+                    "C": [10, 15, 20, 10, 30, 16, 25, 11, 25, 19]})
 
-print(df)
-print(df.cov())
-print(df.var())
-=======
->>>>>>> 8891aece9c70a89273a39776bd8302bccb5ecb75
+    # * Choose new values to compare against the dataframe 
+    newValue = [4, 500, 40]
+
+    # * Find the mean of each column
+    mean = []
+    [mean.append(np.mean(y)) for x,y in df.iteritems()]
+
+    
+    # * find the "distance" from the mean, or the (x-m)
+    distance = [x - y for x,y in zip(newValue, mean)]
+    
+    # * find the inverse of the covariance of the matrix
+    invcov = np.linalg.inv(df.cov())
+    
+    # * (x-m)^t * Σ^-1 * (x-m )----  calculating this part buy using the numpy dot product method
+    MD_squared = np.dot(np.dot(distance,invcov),distance)
+    
+    # * Calculate Mahalanobis Distance by returning the squared root of the previous answer
+    print(np.sqrt(MD_squared))
+    
+if __name__ == "__main__":
+    main()
